@@ -1,8 +1,8 @@
 package com.packtpub.mmj.booking.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +20,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 
 /**
- * Spring System test - by using @SpringApplicationConfiguration that picks up
- * same configuration that Spring Boot uses.
+ * Spring System test - by using @SpringApplicationConfiguration that picks up same configuration that Spring Boot
+ * uses.
  */
 @SpringBootTest(classes = BookingApp.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BookingControllerIntegrationTests {
@@ -52,7 +52,7 @@ public class BookingControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("Booking 1", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
     }
 
     /**
@@ -63,7 +63,8 @@ public class BookingControllerIntegrationTests {
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/booking/99", HttpMethod.GET, entity, Map.class);
+        ResponseEntity<Map> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/booking/99", HttpMethod.GET, entity, Map.class);
 
         assertNotNull(responseE);
 
@@ -81,7 +82,9 @@ public class BookingControllerIntegrationTests {
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         Map<String, Object> uriVariables = new HashMap<>();
         uriVariables.put("name", "Booking");
-        ResponseEntity<Map[]> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/booking/?name={name}", HttpMethod.GET, entity, Map[].class, uriVariables);
+        ResponseEntity<Map[]> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/booking/?name={name}", HttpMethod.GET, entity, Map[].class,
+                uriVariables);
 
         assertNotNull(responseE);
 
@@ -91,7 +94,7 @@ public class BookingControllerIntegrationTests {
         assertNotNull(responses);
 
         // Assumed only single instance exist for booking name contains word "Big"
-        assertTrue(responses.length == 2);
+        assertEquals(2, responses.length);
 
         Map<String, Object> response = responses[0];
         String id = response.get("id").toString();
@@ -101,7 +104,7 @@ public class BookingControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("Booking 1", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
     }
 
     /**
@@ -127,7 +130,8 @@ public class BookingControllerIntegrationTests {
         objectMapper.findAndRegisterModules();
         HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(requestBody), headers);
 
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/booking", HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
+        ResponseEntity<Map> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/booking", HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
 
         assertNotNull(responseE);
 
@@ -135,8 +139,8 @@ public class BookingControllerIntegrationTests {
         assertEquals(HttpStatus.CREATED, responseE.getStatusCode());
 
         //validating the newly created booking using API call
-        Map<String, Object> response
-                = restTemplate.getForObject("http://localhost:" + port + "/v1/booking/3", Map.class);
+        Map<String, Object> response = restTemplate.getForObject(
+                "http://localhost:" + port + "/v1/booking/3", Map.class);
 
         assertNotNull(response);
 
@@ -148,7 +152,7 @@ public class BookingControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("TestBkng 3", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
         String userId = response.get("userId").toString();
         assertNotNull(userId);
         assertEquals("3", userId);
