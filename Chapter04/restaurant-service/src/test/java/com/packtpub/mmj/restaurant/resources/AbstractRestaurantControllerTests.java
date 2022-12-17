@@ -16,51 +16,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
- *
  * @author Sourabh Sharma
  */
 public abstract class AbstractRestaurantControllerTests {
 
-    /**
-     * RESTAURANT ID constant having value 1
-     */
     protected static final String RESTAURANT = "1";
 
-    /**
-     * RESTAURANT name constant having value Big-O Restaurant
-     */
     protected static final String RESTAURANT_NAME = "Le Meurice";
 
-    /**
-     * RESTAURANT address constant
-     */
     protected static final String RESTAURANT_ADDRESS = "228 rue de Rivoli, 75001, Paris";
 
     @Autowired
     RestaurantController restaurantController;
 
-    /**
-     * Test method for findById method
-     */
     @Test
-    public void validResturantById() {
-        Logger.getGlobal().info("Start validResturantById test");
-        ResponseEntity<Entity> restaurant = restaurantController.findById(RESTAURANT);
+    public void validRestaurantById() {
+        Logger.getGlobal().info("Start validRestaurantById test");
+        ResponseEntity<Entity<String>> restaurant = restaurantController.findById(RESTAURANT);
 
         assertEquals(HttpStatus.OK, restaurant.getStatusCode());
         assertTrue(restaurant.hasBody());
         assertNotNull(restaurant.getBody());
         assertEquals(RESTAURANT, restaurant.getBody().getId());
         assertEquals(RESTAURANT_NAME, restaurant.getBody().getName());
-        Logger.getGlobal().info("End validResturantById test");
+        Logger.getGlobal().info("End validRestaurantById test");
     }
 
-    /**
-     * Test method for findByName method
-     */
     @Test
-    public void validResturantByName() {
-        Logger.getGlobal().info("Start validResturantByName test");
+    public void validRestaurantByName() {
+        Logger.getGlobal().info("Start validRestaurantByName test");
         ResponseEntity<Collection<Restaurant>> restaurants = restaurantController.findByName(RESTAURANT_NAME);
         Logger.getGlobal().info("In validAccount test");
 
@@ -71,18 +55,13 @@ public abstract class AbstractRestaurantControllerTests {
         Restaurant restaurant = (Restaurant) restaurants.getBody().toArray()[0];
         assertEquals(RESTAURANT, restaurant.getId());
         assertEquals(RESTAURANT_NAME, restaurant.getName());
-        Logger.getGlobal().info("End validResturantByName test");
+        Logger.getGlobal().info("End validRestaurantByName test");
     }
 
-    /**
-     * Test method for add method
-     */
     @Test
     public void validAdd() {
         Logger.getGlobal().info("Start validAdd test");
-        RestaurantVO restaurant = new RestaurantVO();
-        restaurant.setId("999");
-        restaurant.setName("Test Restaurant");
+        RestaurantVO restaurant = new RestaurantVO("999", "Test Restaurant", null, null);
 
         ResponseEntity<Restaurant> restaurants = restaurantController.add(restaurant);
         assertEquals(HttpStatus.CREATED, restaurants.getStatusCode());

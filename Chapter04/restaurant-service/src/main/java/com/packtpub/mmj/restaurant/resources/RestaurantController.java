@@ -5,108 +5,71 @@ import com.packtpub.mmj.restaurant.domain.model.entity.Restaurant;
 import com.packtpub.mmj.restaurant.domain.service.RestaurantService;
 import com.packtpub.mmj.restaurant.domain.valueobject.RestaurantVO;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- *
  * @author Sourabh Sharma
  */
 @RestController
 @RequestMapping("/v1/restaurants")
 public class RestaurantController {
 
-    /**
-     *
-     */
-    protected static final Logger logger = Logger.getLogger(RestaurantController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(RestaurantController.class.getName());
 
-    /**
-     *
-     */
-    protected RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
 
-    /**
-     *
-     * @param restaurantService
-     */
     @Autowired
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 
-    /**
-     * Fetch restaurants with the specified name. A partial case-insensitive
-     * match is supported. So <code>http://.../restaurants/rest</code> will find
-     * any restaurants with upper or lower case 'rest' in their name.
-     *
-     * @param name
-     * @return A non-null, non-empty collection of restaurants.
-     */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<Collection<Restaurant>> findByName(@RequestParam("name") String name) {
-        logger.info(String.format("restaurant-service findByName() invoked:{} for {} ", restaurantService.getClass().getName(), name));
-        name = name.trim().toLowerCase();
+        logger.info("restaurant-service findByName() invoked:{} for {} ", restaurantService.getClass().getName(), name);
         Collection<Restaurant> restaurants;
         try {
-            restaurants = restaurantService.findByName(name);
+            restaurants = restaurantService.findByName(name.trim().toLowerCase());
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Exception raised findByName REST Call", ex);
+            logger.error("Exception raised findByName REST Call", ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return restaurants.size() > 0 ? new ResponseEntity<>(restaurants, HttpStatus.OK)
+        return restaurants.size() > 0
+                ? new ResponseEntity<>(restaurants, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     * Fetch restaurants with the given id.
-     * <code>http://.../v1/restaurants/{restaurant_id}</code> will return
-     * restaurant with given id.
-     *
-     * @param id
-     * @return A non-null, non-empty collection of restaurants.
-     */
-    @RequestMapping(value = "/{restaurant_id}", method = RequestMethod.GET)
-    public ResponseEntity<Entity> findById(@PathVariable("restaurant_id") String id) {
-        logger.info(String.format("restaurant-service findById() invoked:{} for {} ", restaurantService.getClass().getName(), id));
-        id = id.trim();
-        Entity restaurant;
+    @GetMapping("/{restaurant_id}")
+    public ResponseEntity<Entity<String>> findById(@PathVariable("restaurant_id") String id) {
+        logger.info("restaurant-service findById() invoked:{} for {} ", restaurantService.getClass().getName(), id);
+        Entity<String> restaurant;
         try {
-            restaurant = restaurantService.findById(id);
+            restaurant = restaurantService.findById(id.trim());
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Exception raised findById REST Call {0}", ex);
+            logger.warn("Exception raised findById REST Call {0}", ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return restaurant != null ? new ResponseEntity<>(restaurant, HttpStatus.OK)
+        return restaurant != null
+                ? new ResponseEntity<>(restaurant, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     * Add restaurant with the specified information.
-     *
-     * @param restaurantVO
-     * @return A non-null restaurant.
-     */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Restaurant> add(@RequestBody RestaurantVO restaurantVO) {
-        logger.info(String.format("restaurant-service add() invoked: %s for %s", restaurantService.getClass().getName(), restaurantVO.getName()));
+        logger.info("restaurant-service add() invoked: {} for {}", restaurantService.getClass().getName(),
+                restaurantVO.name());
         System.out.println(restaurantVO);
         Restaurant restaurant = new Restaurant(null, null, null, null);
         BeanUtils.copyProperties(restaurantVO, restaurant);
         try {
             restaurantService.add(restaurant);
         } catch (Exception ex) {
-            logger.log(Level.WARNING, "Exception raised add Restaurant REST Call {0}", ex);
+            logger.warn("Exception raised add Restaurant REST Call {0}", ex);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
