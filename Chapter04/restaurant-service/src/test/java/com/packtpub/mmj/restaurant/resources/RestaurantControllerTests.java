@@ -4,12 +4,11 @@ import com.packtpub.mmj.restaurant.domain.model.entity.Restaurant;
 import com.packtpub.mmj.restaurant.domain.repository.RestaurantRepository;
 import com.packtpub.mmj.restaurant.domain.service.RestaurantService;
 import com.packtpub.mmj.restaurant.domain.service.RestaurantServiceImpl;
-import static com.packtpub.mmj.restaurant.resources.AbstractRestaurantControllerTests.RESTAURANT;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -148,7 +147,7 @@ public class RestaurantControllerTests extends AbstractRestaurantControllerTests
     /**
      * Setup method
      */
-    @Before
+    @BeforeEach
     public void setup() {
         restaurantController = new RestaurantController(restaurantService);
     }

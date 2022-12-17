@@ -1,12 +1,16 @@
 package com.packtpub.mmj.restaurant.resources;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.packtpub.mmj.restaurant.domain.model.entity.Entity;
 import com.packtpub.mmj.restaurant.domain.model.entity.Restaurant;
 import com.packtpub.mmj.restaurant.domain.valueobject.RestaurantVO;
 import java.util.Collection;
 import java.util.logging.Logger;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,11 +47,11 @@ public abstract class AbstractRestaurantControllerTests {
         Logger.getGlobal().info("Start validResturantById test");
         ResponseEntity<Entity> restaurant = restaurantController.findById(RESTAURANT);
 
-        Assert.assertEquals(HttpStatus.OK, restaurant.getStatusCode());
-        Assert.assertTrue(restaurant.hasBody());
-        Assert.assertNotNull(restaurant.getBody());
-        Assert.assertEquals(RESTAURANT, restaurant.getBody().getId());
-        Assert.assertEquals(RESTAURANT_NAME, restaurant.getBody().getName());
+        assertEquals(HttpStatus.OK, restaurant.getStatusCode());
+        assertTrue(restaurant.hasBody());
+        assertNotNull(restaurant.getBody());
+        assertEquals(RESTAURANT, restaurant.getBody().getId());
+        assertEquals(RESTAURANT_NAME, restaurant.getBody().getName());
         Logger.getGlobal().info("End validResturantById test");
     }
 
@@ -60,13 +64,13 @@ public abstract class AbstractRestaurantControllerTests {
         ResponseEntity<Collection<Restaurant>> restaurants = restaurantController.findByName(RESTAURANT_NAME);
         Logger.getGlobal().info("In validAccount test");
 
-        Assert.assertEquals(HttpStatus.OK, restaurants.getStatusCode());
-        Assert.assertTrue(restaurants.hasBody());
-        Assert.assertNotNull(restaurants.getBody());
-        Assert.assertFalse(restaurants.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, restaurants.getStatusCode());
+        assertTrue(restaurants.hasBody());
+        assertNotNull(restaurants.getBody());
+        assertFalse(restaurants.getBody().isEmpty());
         Restaurant restaurant = (Restaurant) restaurants.getBody().toArray()[0];
-        Assert.assertEquals(RESTAURANT, restaurant.getId());
-        Assert.assertEquals(RESTAURANT_NAME, restaurant.getName());
+        assertEquals(RESTAURANT, restaurant.getId());
+        assertEquals(RESTAURANT_NAME, restaurant.getName());
         Logger.getGlobal().info("End validResturantByName test");
     }
 
@@ -81,7 +85,7 @@ public abstract class AbstractRestaurantControllerTests {
         restaurant.setName("Test Restaurant");
 
         ResponseEntity<Restaurant> restaurants = restaurantController.add(restaurant);
-        Assert.assertEquals(HttpStatus.CREATED, restaurants.getStatusCode());
+        assertEquals(HttpStatus.CREATED, restaurants.getStatusCode());
         Logger.getGlobal().info("End validAdd test");
     }
 }

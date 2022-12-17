@@ -4,5 +4,7 @@ spring:
         discovery:
             enabled: false
 
-
+local:
+    server:
+        port: 2222
 
