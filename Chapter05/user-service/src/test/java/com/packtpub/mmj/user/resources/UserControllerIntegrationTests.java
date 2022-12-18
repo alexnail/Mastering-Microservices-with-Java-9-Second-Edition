@@ -1,32 +1,23 @@
 package com.packtpub.mmj.user.resources;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.packtpub.mmj.user.UsersApp;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 public class UserControllerIntegrationTests {
@@ -58,7 +49,7 @@ public class UserControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("User Name 1", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
     }
 
     /**
@@ -69,7 +60,8 @@ public class UserControllerIntegrationTests {
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/user/99", HttpMethod.GET, entity, Map.class);
+        ResponseEntity<Map> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/user/99", HttpMethod.GET, entity, Map.class);
 
         assertNotNull(responseE);
 
@@ -87,7 +79,9 @@ public class UserControllerIntegrationTests {
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         Map<String, Object> uriVariables = new HashMap<>();
         uriVariables.put("name", "User");
-        ResponseEntity<Map[]> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/user/?name={name}", HttpMethod.GET, entity, Map[].class, uriVariables);
+        ResponseEntity<Map[]> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/user/?name={name}", HttpMethod.GET, entity, Map[].class,
+                uriVariables);
 
         assertNotNull(responseE);
 
@@ -96,7 +90,7 @@ public class UserControllerIntegrationTests {
         Map<String, Object>[] responses = responseE.getBody();
         assertNotNull(responses);
 
-        assertTrue(responses.length == 2);
+        assertEquals(2, responses.length);
 
         Map<String, Object> response = responses[0];
         String id = response.get("id").toString();
@@ -106,13 +100,11 @@ public class UserControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("User Name 1", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
     }
 
     /**
      * Test the POST /v1/user API
-     *
-     * @throws JsonProcessingException
      */
     @Test
     public void testAdd() throws JsonProcessingException {
@@ -127,7 +119,8 @@ public class UserControllerIntegrationTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(requestBody), headers);
 
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/user", HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
+        ResponseEntity<Map> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/user", HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
 
         assertNotNull(responseE);
 
@@ -135,8 +128,8 @@ public class UserControllerIntegrationTests {
         assertEquals(HttpStatus.CREATED, responseE.getStatusCode());
 
         //validating the newly created user using API call
-        Map<String, Object> response
-                = restTemplate.getForObject("http://localhost:" + port + "/v1/user/3", Map.class);
+        Map<String, Object> response = restTemplate.getForObject(
+                "http://localhost:" + port + "/v1/user/3", Map.class);
 
         assertNotNull(response);
 
@@ -148,7 +141,7 @@ public class UserControllerIntegrationTests {
         assertNotNull(name);
         assertEquals("Testusr 3", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
         String address = response.get("address").toString();
         assertNotNull(address);
         assertEquals("Address for 3rd User", address);

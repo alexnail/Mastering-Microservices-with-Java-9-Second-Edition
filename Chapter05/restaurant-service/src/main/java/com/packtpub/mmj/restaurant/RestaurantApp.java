@@ -28,10 +28,6 @@ public class RestaurantApp {
         return connectionFactory.getRabbitConnectionFactory();
     }
 
-    /**
-     *
-     * @param args
-     */
     public static void main(String[] args) {
         SpringApplication.run(RestaurantApp.class, args);
     }

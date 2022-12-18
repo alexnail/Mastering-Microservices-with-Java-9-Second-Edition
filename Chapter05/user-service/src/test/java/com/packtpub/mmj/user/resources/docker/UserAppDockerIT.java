@@ -1,18 +1,17 @@
 package com.packtpub.mmj.user.resources.docker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Sourabh Sharma
  */
-@Category(DockerIntegrationTest.class)
+@Tag("DockerIntegrationTest")
 public class UserAppDockerIT {
 
     @Test

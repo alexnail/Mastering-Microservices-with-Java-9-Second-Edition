@@ -1,10 +1,10 @@
 # Spring properties
 spring:
-    cloud:
-        discovery:
-            enabled: false
-    aop:
-        auto: false
+  cloud:
+    discovery:
+      enabled: false
+  aop:
+    auto: false
 #        config:
 #            enabled: false
 #            server:
@@ -18,3 +18,7 @@ spring:
 #                enabled: false
 #            fallback:
 #                enabled: false
+hystrix:
+  stream:
+    queue:
+      enabled: false

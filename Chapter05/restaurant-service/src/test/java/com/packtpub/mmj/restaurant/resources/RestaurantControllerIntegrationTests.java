@@ -1,39 +1,24 @@
 package com.packtpub.mmj.restaurant.resources;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.mmj.restaurant.domain.model.entity.Table;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class RestaurantControllerIntegrationTests extends
-        AbstractRestaurantControllerTests {
+public class RestaurantControllerIntegrationTests extends AbstractRestaurantControllerTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -49,8 +34,8 @@ public class RestaurantControllerIntegrationTests extends
     @Test
     public void testGetById() {
         //API call
-        Map<String, Object> response
-                = restTemplate.getForObject("http://localhost:" + port + "/v1/restaurants/1", Map.class);
+        Map<String, Object> response = restTemplate.getForObject(
+                "http://localhost:" + port + "/v1/restaurants/1", Map.class);
 
         assertNotNull(response);
 
@@ -62,7 +47,7 @@ public class RestaurantControllerIntegrationTests extends
         assertNotNull(name);
         assertEquals("Le Meurice", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
         List<Table> tableList = (List<Table>) response.get("tables");
         assertNull(tableList);
     }
@@ -75,7 +60,8 @@ public class RestaurantControllerIntegrationTests extends
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/restaurants/99", HttpMethod.GET, entity, Map.class);
+        ResponseEntity<Map> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/restaurants/99", HttpMethod.GET, entity, Map.class);
 
         assertNotNull(responseE);
 
@@ -93,7 +79,9 @@ public class RestaurantControllerIntegrationTests extends
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         Map<String, Object> uriVariables = new HashMap<>();
         uriVariables.put("name", "Meurice");
-        ResponseEntity<Map[]> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/restaurants?name={name}", HttpMethod.GET, entity, Map[].class, uriVariables);
+        ResponseEntity<Map[]> responseE = restTemplate.exchange(
+                "http://localhost:" + port + "/v1/restaurants?name={name}",
+                HttpMethod.GET, entity, Map[].class, uriVariables);
 
         assertNotNull(responseE);
 
@@ -103,7 +91,7 @@ public class RestaurantControllerIntegrationTests extends
         assertNotNull(responses);
 
         // Assumed only single instance exist for restaurant name contains word "Meurice"
-        assertTrue(responses.length == 1);
+        assertEquals(1, responses.length);
 
         Map<String, Object> response = responses[0];
         String id = response.get("id").toString();
@@ -113,15 +101,13 @@ public class RestaurantControllerIntegrationTests extends
         assertNotNull(name);
         assertEquals("Le Meurice", name);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
         List<Table> tableList = (List<Table>) response.get("tables");
         assertNull(tableList);
     }
 
     /**
      * Test the POST /v1/restaurants API
-     *
-     * @throws JsonProcessingException
      */
     @Test
     public void testAdd() throws JsonProcessingException {
@@ -133,16 +119,16 @@ public class RestaurantControllerIntegrationTests extends
         Map<String, Object> table1 = new HashMap<>();
         table1.put("name", "Table 1");
         table1.put("id", BigInteger.ONE);
-        table1.put("capacity", Integer.valueOf(6));
+        table1.put("capacity", 6);
         Map<String, Object> table2 = new HashMap<>();
         table2.put("name", "Table 2");
         table2.put("id", BigInteger.valueOf(2));
-        table2.put("capacity", Integer.valueOf(4));
+        table2.put("capacity", 4);
         Map<String, Object> table3 = new HashMap<>();
         table3.put("name", "Table 3");
         table3.put("id", BigInteger.valueOf(3));
-        table3.put("capacity", Integer.valueOf(2));
-        List<Map<String, Object>> tableList = new ArrayList();
+        table3.put("capacity", 2);
+        List<Map<String, Object>> tableList = new ArrayList<>();
         tableList.add(table1);
         tableList.add(table2);
         tableList.add(table3);
@@ -151,7 +137,8 @@ public class RestaurantControllerIntegrationTests extends
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(requestBody), headers);
 
-        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/restaurants", HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
+        ResponseEntity<Map> responseE = restTemplate.exchange("http://localhost:" + port + "/v1/restaurants",
+                HttpMethod.POST, entity, Map.class, Collections.EMPTY_MAP);
 
         assertNotNull(responseE);
 
@@ -175,11 +162,11 @@ public class RestaurantControllerIntegrationTests extends
         assertNotNull(address);
         assertEquals("address of La Plaza Restaurant", address);
         boolean isModified = (boolean) response.get("isModified");
-        assertEquals(false, isModified);
+        assertFalse(isModified);
         List<Map<String, Object>> tableList2 = (List<Map<String, Object>>) response.get("tables");
         assertNotNull(tableList2);
         assertEquals(tableList2.size(), 3);
-        tableList2.stream().forEach((table) -> {
+        tableList2.forEach((table) -> {
             assertNotNull(table);
             assertNotNull(table.get("name"));
             assertNotNull(table.get("id"));

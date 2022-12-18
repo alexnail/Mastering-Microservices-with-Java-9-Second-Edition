@@ -1,6 +1,7 @@
 package com.packtpub.mmj.dashboard;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -20,7 +21,7 @@ public class DashboardApp extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(DashboardApp.class).web(true);
+        return application.sources(DashboardApp.class).web(WebApplicationType.SERVLET);
     }
 
     public static void main(String[] args) {
