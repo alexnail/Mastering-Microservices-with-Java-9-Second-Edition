@@ -94,6 +94,7 @@
                 <configuration>
                     <excludedGroups>com.packtpub.mmj.user.resources.docker.DockerIntegrationTest</excludedGroups>
                 </configuration>
+                <version>2.21.0</version>
             </plugin>
         </plugins>
     </build>
@@ -109,11 +110,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
             <!-- Added below version as build snapshot was not working -->
             <!--            <version>2.0.0.M1</version>-->
         </dependency>

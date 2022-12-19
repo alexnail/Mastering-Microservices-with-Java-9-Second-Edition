@@ -5,9 +5,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.apache.log4j.MDC;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class RestaurantServiceAPI {
     @HystrixCommand(fallbackMethod = "defaultRestaurant")
     public ResponseEntity<Restaurant> getRestaurant(
             @PathVariable("restaurant-id") int restaurantId) {
-        MDC.put("restaurantId", restaurantId);
+        MDC.put("restaurantId", String.valueOf(restaurantId));
         String url = "http://restaurant-service/v1/restaurants/" + restaurantId;
         LOG.debug("GetRestaurant from URL: {}", url);
 

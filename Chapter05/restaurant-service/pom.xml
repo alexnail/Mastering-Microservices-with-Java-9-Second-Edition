@@ -93,27 +93,26 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludedGroups>com.packtpub.mmj.restaurant.resources.docker.DockerIT</excludedGroups>
+                    <argLine>
+                        --add-opens=java.base/java.lang=ALL-UNNAMED
+                    </argLine>
                 </configuration>
+                <version>2.21.0</version>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!--        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>online-table-reservation-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
             <!-- Added below version as build snapshot was not working -->
             <!--            <version>2.0.0.M1</version>-->
         </dependency>
