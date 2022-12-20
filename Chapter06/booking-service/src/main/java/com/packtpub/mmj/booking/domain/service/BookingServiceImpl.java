@@ -4,7 +4,7 @@ import com.packtpub.mmj.booking.domain.message.BookingMessageChannels;
 import com.packtpub.mmj.booking.domain.model.entity.Booking;
 import com.packtpub.mmj.booking.domain.model.entity.Entity;
 import com.packtpub.mmj.booking.domain.repository.BookingRepository;
-import com.packtpub.mmj.booking.domain.valueobject.avro.BookingOrder;
+import com.packtpub.mmj.booking.domain.valueobject.BookingVO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -71,7 +71,7 @@ public class BookingServiceImpl extends BaseService<Booking, String> implements 
 
     @Override
     public void produceBookingOrderEvent(Booking booking) {
-        BookingOrder.Builder boBuilder = BookingOrder.newBuilder();
+        /*BookingOrder.Builder boBuilder = BookingOrder.newBuilder();
         boBuilder.setId(booking.getId());
         boBuilder.setName(booking.getName());
         boBuilder.setRestaurantId(booking.getRestaurantId());
@@ -79,9 +79,11 @@ public class BookingServiceImpl extends BaseService<Booking, String> implements 
         boBuilder.setUserId(booking.getUserId());
         boBuilder.setDate(booking.getDate().toString());
         boBuilder.setTime(booking.getTime().toString());
-        BookingOrder bo = boBuilder.build();
+        BookingOrder bo = boBuilder.build();*/
+        BookingVO bo = new BookingVO(booking.getId(), booking.getName(), booking.getRestaurantId(), booking.getTableId(),
+                booking.getUserId(), booking.getDate(), booking.getTime());
 
-        Message<BookingOrder> message = MessageBuilder.withPayload(bo).build();
+        Message<BookingVO> message = MessageBuilder.withPayload(bo).build();
         bookingMessageChannels.bookingOrderOutput().send(message);
         LOG.info("sending bookingOrder: {}", booking);
     }

@@ -19,11 +19,11 @@ public class BookingApp {
         SpringApplication.run(BookingApp.class, args);
     }
 
-    @Bean
+    /*@Bean
     public MessageConverter bookingOrderMessageConverter() {
         LOG.info("avro message converter bean initialized.");
         AvroSchemaMessageConverter avroSchemaMessageConverter = new AvroSchemaMessageConverter(MimeType.valueOf("application/bookingOrder.v1+avro"));
         avroSchemaMessageConverter.setSchemaLocation(new ClassPathResource("avro/bookingOrder.avsc"));
         return avroSchemaMessageConverter;
-    }
+    }*/
 }
