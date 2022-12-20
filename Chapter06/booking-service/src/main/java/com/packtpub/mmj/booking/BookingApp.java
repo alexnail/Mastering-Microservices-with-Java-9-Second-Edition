@@ -1,6 +1,5 @@
 package com.packtpub.mmj.booking;
 
-import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +20,7 @@ public class BookingApp {
     }
 
     @Bean
-    public MessageConverter bookingOrderMessageConverter() throws IOException {
+    public MessageConverter bookingOrderMessageConverter() {
         LOG.info("avro message converter bean initialized.");
         AvroSchemaMessageConverter avroSchemaMessageConverter = new AvroSchemaMessageConverter(MimeType.valueOf("application/bookingOrder.v1+avro"));
         avroSchemaMessageConverter.setSchemaLocation(new ClassPathResource("avro/bookingOrder.avsc"));

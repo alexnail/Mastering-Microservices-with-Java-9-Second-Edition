@@ -39,7 +39,7 @@ public interface BookingService {
      * @return
      * @throws Exception
      */
-    public Entity findById(String id) throws Exception;
+    public Entity<String> findById(String id) throws Exception;
 
     /**
      *
