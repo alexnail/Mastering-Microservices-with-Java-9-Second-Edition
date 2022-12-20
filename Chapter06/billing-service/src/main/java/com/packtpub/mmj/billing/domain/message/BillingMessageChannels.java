@@ -5,7 +5,7 @@ import org.springframework.messaging.MessageChannel;
 
 public interface BillingMessageChannels {
 
-    public final static String BOOKING_ORDER_INPUT = "bookingOrderInput";
+    String BOOKING_ORDER_INPUT = "bookingOrderInput";
 
     @Input(BOOKING_ORDER_INPUT)
     MessageChannel bookingOrderInput();

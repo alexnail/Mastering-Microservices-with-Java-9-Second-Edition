@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @author Sourabh Sharma
  */
-@SpringBootApplication(scanBasePackages = {"com.packtpub.mmj.billing", "com.packtpub.mmj.booking"})
+@SpringBootApplication
 @EnableBinding({BillingMessageChannels.class})
 public class BillingApp {
 
