@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableEurekaClient
 @EnableCircuitBreaker
 @Configuration
-@ComponentScan({"com.packtpub.mmj.api.service", "com.packtpub.mmj.common"})
 public class ApiApp {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApiApp.class);

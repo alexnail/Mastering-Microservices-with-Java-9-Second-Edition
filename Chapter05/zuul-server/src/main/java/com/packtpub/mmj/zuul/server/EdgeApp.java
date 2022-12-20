@@ -74,9 +74,10 @@ class DiscoveryClientSample implements CommandLineRunner {
     private DiscoveryClient discoveryClient;
 
     @Override
-    public void run(String... strings) throws Exception {
+    public void run(String... strings) {
         System.out.println(discoveryClient.description());
-        discoveryClient.getInstances("restaurant-service").forEach((ServiceInstance serviceInstance) -> {
+        discoveryClient.getInstances("restaurant-service")
+                .forEach((ServiceInstance serviceInstance) -> {
             System.out.println("Instance --> " + serviceInstance.getServiceId()
                     + "\nServer: " + serviceInstance.getHost() + ":" + serviceInstance.getPort()
                     + "\nURI: " + serviceInstance.getUri() + "\n\n\n");
@@ -91,19 +92,19 @@ class RestTemplateExample implements CommandLineRunner {
     private RestTemplate restTemplate;
 
     @Override
-    public void run(String... strings) throws Exception {
+    public void run(String... strings) {
         System.out.println("\n\n\n start RestTemplate client...");
         ResponseEntity<Collection<Restaurant>> exchange
                 = this.restTemplate.exchange(
-                        "http://restaurant-service/v1/restaurants?name=o",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<Collection<Restaurant>>() {
+                "http://restaurant-service/v1/restaurants?name=o",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
                 },
-                        (Object) "restaurants");
-        exchange.getBody().forEach((Restaurant restaurant) -> {
-            System.out.println("\n\n\n[ " + restaurant.getId() + " " + restaurant.getName() + "]");
-        });
+                "restaurants");
+        exchange
+                .getBody()
+                .forEach(restaurant -> System.out.println("\n\n\n[ " + restaurant.getId() + " " + restaurant.getName() + "]"));
     }
 }
 
@@ -121,10 +122,11 @@ class FeignSample implements CommandLineRunner {
     private RestaurantClient restaurantClient;
 
     @Override
-    public void run(String... strings) throws Exception {
-        this.restaurantClient.getRestaurants("o").forEach((Restaurant restaurant) -> {
-            System.out.println("\n\n\n[ " + restaurant.getId() + " " + restaurant.getName() + "]");
-        });
+    public void run(String... strings) {
+        System.out.println("\n\n\n Running FeignClient...");
+        this.restaurantClient
+                .getRestaurants("o")
+                .forEach(restaurant -> System.out.println("\n\n\n[ " + restaurant.getId() + " " + restaurant.getName() + "]"));
     }
 }
 
