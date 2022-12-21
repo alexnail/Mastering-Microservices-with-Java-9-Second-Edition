@@ -1,23 +1,27 @@
 package com.packtpub.mmj.restaurant.resources.docker;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 /**
+ *
  * @author Sourabh Sharma
  */
-@Tag("DockerIT")
+@Category(DockerIT.class)
 public class RestaurantAppDockerIT {
 
     /**
+     *
      * @throws IOException
      */
     @Test
+    @Ignore
     public void testConnection() throws IOException {
         String baseUrl = System.getProperty("service.url");
         URL serviceUrl = new URL(baseUrl + "v1/restaurants/1");

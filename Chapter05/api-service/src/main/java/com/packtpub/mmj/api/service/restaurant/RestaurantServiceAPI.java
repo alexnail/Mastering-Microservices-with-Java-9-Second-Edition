@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -12,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -48,9 +53,9 @@ public class RestaurantServiceAPI {
     }
 
     /**
-     * Fetch restaurants with the specified name. A partial case-insensitive match is supported. So
-     * <code>http://.../restaurants/rest</code> will find any restaurants with upper or lower case 'rest' in their
-     * name.
+     * Fetch restaurants with the specified name. A partial case-insensitive
+     * match is supported. So <code>http://.../restaurants/rest</code> will find
+     * any restaurants with upper or lower case 'rest' in their name.
      *
      * @param name
      * @return A non-null, non-empty collection of restaurants.
@@ -102,6 +107,7 @@ class Restaurant {
     private String address;
 
     /**
+     *
      * @return
      */
     public String getAddress() {
@@ -109,6 +115,7 @@ class Restaurant {
     }
 
     /**
+     *
      * @param address
      */
     public void setAddress(String address) {

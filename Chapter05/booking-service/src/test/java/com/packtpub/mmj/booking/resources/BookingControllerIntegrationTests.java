@@ -11,7 +11,16 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
 import org.junit.jupiter.api.Test;
+=======
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+>>>>>>> v9_dependencies_fix
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -163,13 +172,19 @@ public class BookingControllerIntegrationTests {
         String date1 = response.get("date").toString();
         assertNotNull(date1);
         String[] arrDate = date1.replace("[", "").replace("]", "").split(",");
+<<<<<<< HEAD
         //FIXME: format exception
+=======
+>>>>>>> v9_dependencies_fix
         /*assertEquals(nowDate, LocalDate.of(Integer.parseInt(arrDate[0].trim()),
                 Integer.parseInt(arrDate[1].trim()), Integer.parseInt(arrDate[2].trim())));*/
         String time1 = response.get("time").toString();
         assertNotNull(time1);
         String[] arrTime = time1.replace("[", "").replace("]", "").split(",");
+<<<<<<< HEAD
         //FIXME: format exception
+=======
+>>>>>>> v9_dependencies_fix
         /*assertEquals(nowTime, LocalTime.of(Integer.parseInt(arrTime[0].trim()),
                 Integer.parseInt(arrTime[1].trim()), Integer.parseInt(arrTime[2].trim()), Integer.parseInt(arrTime[3].trim())));*/
     }
