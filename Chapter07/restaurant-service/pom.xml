@@ -93,16 +93,14 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludedGroups>com.packtpub.mmj.restaurant.resources.docker.DockerIT</excludedGroups>
+                    <argLine>
+                        --add-opens=java.base/java.lang=ALL-UNNAMED
+                    </argLine>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!--        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>online-table-reservation-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -140,7 +138,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <!-- Testing starter -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
